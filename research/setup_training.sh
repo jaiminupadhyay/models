@@ -3,24 +3,24 @@
 source activate tensorflow
 
 WORKSPACE_DIR=/home/rcf-40/jupadhya/staging/Workspace
-TRAINING_DIR=${WORKSPACE_DIR}/training
+TRAINING_DIR=${WORKSPACE_DIR}/training/overfit
 PRETRAINED_MODELS=${WORKSPACE_DIR}/pre-trained-models/faster_rcnn_resnet101_coco_2018_01_28
 RESEARCH_DIR=/home/rcf-40/jupadhya/staging/Repos/models/research
 
 PATH_TO_YOUR_PIPELINE_CONFIG=${TRAINING_DIR}/models/model/faster_rcnn_resnet101_df.config
-PATH_TO_TRAIN_DIR=${WORKSPACE_DIR}/training/models/model/train
-PATH_TO_EVAL_DIR=${WORKSPACE_DIR}/training/models/model/eval
+PATH_TO_TRAIN_DIR=${TRAINING_DIR}/models/model/train
+PATH_TO_EVAL_DIR=${TRAINING_DIR}/models/model/eval
 
 # From tensorflow/models/research/
 cd ${RESEARCH_DIR}
 
 python object_detection/data/deep-fashion/extract_df_bboxes.py
 
-# ./create_tf_record.sh
+./create_tf_record.sh
 
 cp object_detection/data/deep-fashion/df_label_map.pbtxt ${TRAINING_DIR}/data
 
-# cp object_detection/data/deep-fashion/df_*.record ${TRAINING_DIR}/data
+# object_detection/data/deep-fashion/df_*.record ${TRAINING_DIR}/data
 
 # cp ${PRETRAINED_MODELS}/model.ckpt.* ${TRAINING_DIR}/models/model/
 
