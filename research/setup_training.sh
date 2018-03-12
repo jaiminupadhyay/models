@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source activate tensorflow
+
 WORKSPACE_DIR=/home/rcf-40/jupadhya/staging/Workspace
 TRAINING_DIR=${WORKSPACE_DIR}/training
 PRETRAINED_MODELS=${WORKSPACE_DIR}/pre-trained-models/faster_rcnn_resnet101_coco_2018_01_28
@@ -12,7 +14,7 @@ PATH_TO_EVAL_DIR=${WORKSPACE_DIR}/training/models/model/eval
 # From tensorflow/models/research/
 cd ${RESEARCH_DIR}
 
-# python object_detection/data/deep-fashion/extract_df_bboxes.py
+python object_detection/data/deep-fashion/extract_df_bboxes.py
 
 # ./create_tf_record.sh
 

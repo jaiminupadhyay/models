@@ -16,7 +16,7 @@ VAL_FILE = os.path.join(ANNO_DIR, 'df_val.npy')
 TEST_FILE = os.path.join(ANNO_DIR, 'df_test.npy')
 LABELS_PBTXT = 'df_label_map.pbtxt'
 
-def read_anno_map(list_path, anno_map):
+def read_anno_map(list_path, anno_map, existing=False):
   with open(list_path, 'r') as f:
     anno_len = int(f.readline())
     f.readline()
@@ -24,9 +24,13 @@ def read_anno_map(list_path, anno_map):
       anno = f.readline().split()
       image = anno[0]
       anno = anno[1:]
-      if image not in anno_map:
-        anno_map[image] = []
-      anno_map[image].extend(anno)
+      if existing:
+	if image in anno_map:
+          anno_map[image].extend(anno);
+      else:
+        if image not in anno_map:
+          anno_map[image] = []
+        anno_map[image].extend(anno)
 
 
 def read_category_list(list_path):
@@ -49,7 +53,8 @@ def create_label_pbtxt():
   labels = []
   for idx, ele in enumerate(category_list, 1):
     labels.append([idx,ele])
-  labels = np.asarray(labels)
+  labels = np.asarray(labels[:3])
+  print('Labels: ', labels.shape)
 
   np.save(LABELS_NPY, labels)
   print('Saved ' + LABELS_NPY)
@@ -69,20 +74,20 @@ def main():
 
   labels = create_label_pbtxt()
 
+  print(labels)
+
   read_anno_map(BBOX_LIST, anno_map)
 
   for image_path in anno_map:
     image_group_name = os.path.basename(os.path.dirname(image_path))
     image_group_name = image_group_name.split('_')
-    for x in reversed(image_group_name):
-      label = labels[labels[:, 1] == x]
-      if label.shape[0] > 0:
-        label_id = label[0][0]
-        anno_map[image_path] = map(int, anno_map[image_path])
-        anno_map[image_path].append(int(label_id))
-        break
+    label = labels[labels[:, 1] == image_group_name[-1]]
+    if label.shape[0] > 0:
+      label_id = label[0][0]
+      anno_map[image_path] = map(int, anno_map[image_path])
+      anno_map[image_path].append(int(label_id))
 
-  read_anno_map(EVAL_LIST, anno_map)
+  read_anno_map(EVAL_LIST, anno_map, existing=True)
 
   train = []
   val = []
@@ -105,9 +110,9 @@ def main():
 
   # print("[id, 'image_path', x_1, y_1, x_2, y_2, label_id]")
 
-  train = np.asarray(train)[:len(train)/3]
-  val = np.asarray(val)[:len(val)/3]
-  test = np.asarray(test)[:len(test)/3]
+  train = np.asarray(train)
+  val = np.asarray(val)
+  test = np.asarray(test)
 
   print('Train shape: ', train.shape)
   print('Val shape: ', val.shape)
