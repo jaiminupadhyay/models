@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -l walltime=180:00
+#PBS -l nodes=1:ppn=16:gpus=1
+#PBS -d .
+
+source activate tensorflow
+
+cd "RESEARCH_DIR"
+
+# From the tensorflow/models/research/ directory
+python object_detection/eval.py \
+    --logtostderr \
+    --pipeline_config_path="PATH_TO_YOUR_PIPELINE_CONFIG" \
+    --checkpoint_dir="PATH_TO_TRAIN_DIR" \
+    --eval_dir="PATH_TO_EVAL_DIR"
