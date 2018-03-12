@@ -1,0 +1,10 @@
+#!/bin/bash
+#PBS -l walltime=30:00
+#PBS -l nodes=2:ppn=16
+#PBS -d .
+
+source activate tensorflow
+
+cd "RESEARCH_DIR"
+
+./create_tf_record.sh

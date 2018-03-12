@@ -101,13 +101,13 @@ def main():
     else:
       test.append(image)
 
-    print(image)
+    # print(image)
 
-  print("[id, 'image_path', x_1, y_1, x_2, y_2, label_id]")
+  # print("[id, 'image_path', x_1, y_1, x_2, y_2, label_id]")
 
-  train = np.asarray(train)
-  val = np.asarray(val)
-  test = np.asarray(test)
+  train = np.asarray(train)[:len(train)/3]
+  val = np.asarray(val)[:len(val)/3]
+  test = np.asarray(test)[:len(test)/3]
 
   print('Train shape: ', train.shape)
   print('Val shape: ', val.shape)
