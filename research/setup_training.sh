@@ -16,7 +16,7 @@ python object_detection/deep-fashion/extract_df_bboxes.py
 
 ./create_tf_record.sh
 
-# cp object_detection/data/deep-fashion/df_label_map.pbtxt ${TRAINING_DIR}/data
+cp object_detection/data/deep-fashion/df_label_map.pbtxt ${TRAINING_DIR}/data
 
 # cp object_detection/data/deep-fashion/df_*.record ${TRAINING_DIR}/data
 

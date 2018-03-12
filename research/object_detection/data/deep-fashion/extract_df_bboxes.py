@@ -79,7 +79,7 @@ def main():
       if label.shape[0] > 0:
         label_id = label[0][0]
         anno_map[image_path] = map(int, anno_map[image_path])
-        anno_map[image_path].append(label_id)
+        anno_map[image_path].append(int(label_id))
         break
 
   read_anno_map(EVAL_LIST, anno_map)
