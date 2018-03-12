@@ -1,18 +1,19 @@
 from __future__ import print_function
-import argparse
 import numpy as np
 import os
 
-DEEP_FASHION_DIR = '/home/jaimin/Workspace/deep-fashion'
-ANNO_DIR = os.path.join(DEEP_FASHION_DIR, 'anno')
-TRAINING_DIR = os.path.join(DEEP_FASHION_DIR, 'training')
-LABELS_NPY = os.path.join(ANNO_DIR, 'df_labels.npy')
-LABELS_PBTXT = 'df_label_map.pbtxt'
+WORKSPACE_DIR=/home/rcf-40/jupadhya/staging/Workspace
+DEEP_FASHION_DIR = os.path.join(WORKSPACE_DIR, 'deep-fashion')
 BBOX_LIST = os.path.join(DEEP_FASHION_DIR, 'Category and Attribute Prediction Benchmark/Anno/list_bbox.txt')
 EVAL_LIST = os.path.join(DEEP_FASHION_DIR, 'Category and Attribute Prediction Benchmark/Eval/list_eval_partition.txt')
 CATEGORY_LIST = os.path.join(DEEP_FASHION_DIR,
                              'Category and Attribute Prediction Benchmark/Anno/list_category_cloth.txt')
-
+ANNO_DIR = os.path.join(DEEP_FASHION_DIR, 'anno')
+LABELS_NPY = os.path.join(ANNO_DIR, 'df_labels.npy')
+TRAIN_FILE = os.path.join(ANNO_DIR, 'df_train.npy')
+VAL_FILE = os.path.join(ANNO_DIR, 'df_val.npy')
+TEST_FILE = os.path.join(ANNO_DIR, 'df_test.npy')
+LABELS_PBTXT = 'df_label_map.pbtxt'
 
 def read_anno_map(list_path, anno_map):
   with open(list_path, 'r') as f:
@@ -107,22 +108,18 @@ def main():
   val = np.asarray(val)
   test = np.asarray(test)
 
-  train_file = os.path.join(ANNO_DIR, 'df_train.npy')
-  val_file = os.path.join(ANNO_DIR, 'df_val.npy')
-  test_file = os.path.join(ANNO_DIR, 'df_test.npy')
-
   print('Train shape: ', train.shape)
   print('Val shape: ', val.shape)
   print('Test shape: ', test.shape)
 
-  np.save(train_file, train)
-  print('Saved ' + train_file)
+  np.save(TRAIN_FILE, train)
+  print('Saved ' + TRAIN_FILE)
 
-  np.save(val_file, val)
-  print('Saved ' + val_file)
+  np.save(VAL_FILE, val)
+  print('Saved ' + VAL_FILE)
 
-  np.save(test_file, test)
-  print('Saved ' + test_file)
+  np.save(TEST_FILE, test)
+  print('Saved ' + TEST_FILE)
 
 
 if __name__ == '__main__':
