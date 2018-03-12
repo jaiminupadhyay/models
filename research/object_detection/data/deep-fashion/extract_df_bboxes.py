@@ -2,7 +2,8 @@ from __future__ import print_function
 import numpy as np
 import os
 
-WORKSPACE_DIR=/home/rcf-40/jupadhya/staging/Workspace
+WORKSPACE_DIR="/home/rcf-40/jupadhya/staging/Workspace"
+# WORKSPACE_DIR="/home/jaimin/Workspace"
 DEEP_FASHION_DIR = os.path.join(WORKSPACE_DIR, 'deep-fashion')
 BBOX_LIST = os.path.join(DEEP_FASHION_DIR, 'Category and Attribute Prediction Benchmark/Anno/list_bbox.txt')
 EVAL_LIST = os.path.join(DEEP_FASHION_DIR, 'Category and Attribute Prediction Benchmark/Eval/list_eval_partition.txt')
@@ -57,7 +58,7 @@ def create_label_pbtxt():
 
   with open(LABELS_PBTXT, 'w') as pbfile:
     for label in labels:
-      print(item.format(label[0], label[1].lower(), label[1].replace('_', ' '))[:-1])
+      pbfile.write(item.format(label[0], label[1].lower(), label[1].replace('_', ' ')))
 
   print('Saved ' + LABELS_PBTXT)
   return labels
