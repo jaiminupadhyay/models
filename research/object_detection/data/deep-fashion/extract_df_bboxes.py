@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 WORKSPACE_DIR="/home/rcf-40/jupadhya/staging/Workspace"
-# WORKSPACE_DIR="/home/jaimin/Workspace"
+#WORKSPACE_DIR="/home/jaimin/Workspace"
 DEEP_FASHION_DIR = os.path.join(WORKSPACE_DIR, 'deep-fashion')
 BBOX_LIST = os.path.join(DEEP_FASHION_DIR, 'Category and Attribute Prediction Benchmark/Anno/list_bbox.txt')
 EVAL_LIST = os.path.join(DEEP_FASHION_DIR, 'Category and Attribute Prediction Benchmark/Eval/list_eval_partition.txt')
@@ -16,7 +16,7 @@ VAL_FILE = os.path.join(ANNO_DIR, 'df_val.npy')
 TEST_FILE = os.path.join(ANNO_DIR, 'df_test.npy')
 LABELS_PBTXT = 'df_label_map.pbtxt'
 
-def read_anno_map(list_path, anno_map, existing=False):
+def read_anno_map(list_path, anno_map):
   with open(list_path, 'r') as f:
     anno_len = int(f.readline())
     f.readline()
@@ -24,13 +24,9 @@ def read_anno_map(list_path, anno_map, existing=False):
       anno = f.readline().split()
       image = anno[0]
       anno = anno[1:]
-      if existing:
-	if image in anno_map:
-          anno_map[image].extend(anno);
-      else:
-        if image not in anno_map:
-          anno_map[image] = []
-        anno_map[image].extend(anno)
+      if image not in anno_map:
+        anno_map[image] = []
+      anno_map[image].extend(anno)
 
 
 def read_category_list(list_path):
@@ -53,7 +49,7 @@ def create_label_pbtxt():
   labels = []
   for idx, ele in enumerate(category_list, 1):
     labels.append([idx,ele])
-  labels = np.asarray(labels[:3])
+  labels = np.asarray(labels[:5])
   print('Labels: ', labels.shape)
 
   np.save(LABELS_NPY, labels)
@@ -81,13 +77,15 @@ def main():
   for image_path in anno_map:
     image_group_name = os.path.basename(os.path.dirname(image_path))
     image_group_name = image_group_name.split('_')
-    label = labels[labels[:, 1] == image_group_name[-1]]
-    if label.shape[0] > 0:
-      label_id = label[0][0]
-      anno_map[image_path] = map(int, anno_map[image_path])
-      anno_map[image_path].append(int(label_id))
+    for x in reversed(image_group_name):
+      label = labels[labels[:, 1] == x]
+      if label.shape[0] > 0:
+        label_id = label[0][0]
+        anno_map[image_path] = map(int, anno_map[image_path])
+        anno_map[image_path].append(int(label_id))
+        break
 
-  read_anno_map(EVAL_LIST, anno_map, existing=True)
+  read_anno_map(EVAL_LIST, anno_map)
 
   train = []
   val = []
@@ -99,12 +97,14 @@ def main():
     image = [image_id, k]
     image_id += 1
     image.extend(v[:-1])
-    if section == 'train':
-      train.append(image)
-    elif section == 'val':
-      val.append(image)
-    else:
-      test.append(image)
+    image = image
+    if len(image) == 7:
+      if section == 'train':
+        train.append(image)
+      elif section == 'val':
+        val.append(image)
+      else:
+        test.append(image)
 
     # print(image)
 
