@@ -4,7 +4,7 @@ WORKSPACE_DIR=/home/rcf-40/jupadhya/staging/Workspace
 RESEARCH_DIR=/home/rcf-40/jupadhya/staging/Repos/models/research
 DEEP_FASHION_DIR=/home/rcf-40/jupadhya/staging/Workspace/deep-fashion
 ANNO_DIR=${DEEP_FASHION_DIR}/anno
-TRAINING_DIR=${WORKSPACE_DIR}/training/overfit
+TRAINING_DIR=$1
 
 cd ${RESEARCH_DIR}
 

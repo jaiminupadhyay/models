@@ -49,7 +49,7 @@ def create_label_pbtxt():
   labels = []
   for idx, ele in enumerate(category_list, 1):
     labels.append([idx,ele])
-  labels = np.asarray(labels[:5])
+  labels = np.asarray(labels)
   print('Labels: ', labels.shape)
 
   np.save(LABELS_NPY, labels)
@@ -70,7 +70,7 @@ def main():
 
   labels = create_label_pbtxt()
 
-  print(labels)
+  #print(labels)
 
   read_anno_map(BBOX_LIST, anno_map)
 

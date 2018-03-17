@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l walltime=10:00
+#PBS -l walltime=30:00
 #PBS -l nodes=1:ppn=16
 #PBS -d .
 
@@ -7,12 +7,15 @@ CHECKPOINT_NUMBER=$1
 
 source activate tensorflow
 
-cd "RESEARCH_DIR"
+cd "TRAINING_DIR"
 
 # From tensorflow/models/research/
-cp "PATH_TO_TRAIN_DIR"/model.ckpt-${CHECKPOINT_NUMBER}.* .
-python object_detection/export_inference_graph.py \
+cp "PATH_TO_TRAIN_DIR"/model.ckpt-${CHECKPOINT_NUMBER}.* "TRAINING_DIR"
+
+python "RESEARCH_DIR"/object_detection/export_inference_graph.py \
     --input_type image_tensor \
     --pipeline_config_path "PATH_TO_YOUR_PIPELINE_CONFIG" \
     --trained_checkpoint_prefix model.ckpt-${CHECKPOINT_NUMBER} \
-    --output_directory exported_graphs
+    --output_directory "TRAINING_DIR"/exported_graphs
+
+rm "TRAINING_DIR"/model.ckpt-${CHECKPOINT_NUMBER}.*
