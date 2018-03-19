@@ -3,8 +3,8 @@
 source activate tensorflow
 
 WORKSPACE_DIR=/home/rcf-40/jupadhya/staging/Workspace
-TRAINING_DIR=${WORKSPACE_DIR}/training/training_3
-PRETRAINED_MODELS=${WORKSPACE_DIR}/training/training_2/models/exported_graphs
+TRAINING_DIR=${WORKSPACE_DIR}/training/training_4
+PRETRAINED_MODELS=${WORKSPACE_DIR}/training/training_3/exported_graphs
 RESEARCH_DIR=/home/rcf-40/jupadhya/staging/Repos/models/research
 
 PATH_TO_YOUR_PIPELINE_CONFIG=${TRAINING_DIR}/models/model/faster_rcnn_resnet101_df.config
